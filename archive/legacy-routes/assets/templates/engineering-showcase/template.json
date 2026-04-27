@@ -1,0 +1,13 @@
+{
+  "id": "engineering-showcase",
+  "displayName": "Engineering Showcase",
+  "backgroundColor": "F3F7FA",
+  "heroBackgroundColor": "12344A",
+  "titleColor": "12344A",
+  "heroTitleColor": "F3F7FA",
+  "heroSubtitleColor": "D9E4EC",
+  "bodyColor": "24313B",
+  "accentColor": "D96C3A",
+  "titleFont": "Aptos Display",
+  "bodyFont": "Aptos"
+}

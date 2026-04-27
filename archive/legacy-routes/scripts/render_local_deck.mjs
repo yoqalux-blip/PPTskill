@@ -1,0 +1,242 @@
+import fs from "node:fs/promises";
+import path from "node:path";
+import pptxgen from "pptxgenjs";
+
+function parseArgs(argv) {
+  const parsed = {};
+  for (let i = 2; i < argv.length; i += 1) {
+    const token = argv[i];
+    if (!token.startsWith("--")) continue;
+    parsed[token.slice(2)] = argv[i + 1];
+    i += 1;
+  }
+  return parsed;
+}
+
+function addTitleSlide(slide, deckSlide, template) {
+  slide.addText(" ", {
+    x: 0,
+    y: 0,
+    w: 13.333,
+    h: 0.18,
+    margin: 0,
+    fill: { color: template.accentColor },
+    line: { color: template.accentColor }
+  });
+  slide.addText(deckSlide.title, {
+    x: 0.7,
+    y: 1.25,
+    w: 11.8,
+    h: 1.0,
+    fontFace: template.titleFont,
+    fontSize: 26,
+    color: template.heroTitleColor || template.titleColor,
+    bold: true,
+    align: "center"
+  });
+  slide.addText(deckSlide.subtitle || "", {
+    x: 1.3,
+    y: 2.7,
+    w: 10.5,
+    h: 0.5,
+    fontFace: template.bodyFont,
+    fontSize: 15,
+    color: template.heroSubtitleColor || template.bodyColor,
+    align: "center"
+  });
+}
+
+function estimateBodyFontSize(deckSlide) {
+  const bullets = deckSlide.bullets || [];
+  const maxLen = bullets.reduce((max, item) => Math.max(max, item.length), 0);
+  if (bullets.length >= 4 || maxLen >= 54) return 15;
+  if (bullets.length >= 3 || maxLen >= 40) return 16;
+  if (bullets.length === 1 && maxLen <= 24) return 20;
+  return 18;
+}
+
+function addFooter(slide, index, total, template) {
+  slide.addText(" ", {
+    x: 0.7,
+    y: 6.9,
+    w: 11.9,
+    h: 0.01,
+    margin: 0,
+    fill: { color: "D8CFC3" },
+    line: { color: "D8CFC3" }
+  });
+  slide.addText(template.displayName, {
+    x: 0.72,
+    y: 7.0,
+    w: 2.4,
+    h: 0.2,
+    fontFace: template.bodyFont,
+    fontSize: 8,
+    color: template.accentColor
+  });
+  slide.addText(`${index} / ${total}`, {
+    x: 11.2,
+    y: 7.0,
+    w: 1.2,
+    h: 0.2,
+    fontFace: template.bodyFont,
+    fontSize: 8,
+    color: template.accentColor,
+    align: "right"
+  });
+}
+
+function addBulletSlide(slide, deckSlide, template, index, total) {
+  const fontSize = estimateBodyFontSize(deckSlide);
+  const sectionLabel = (deckSlide.title || "").includes("：") ? deckSlide.title.split("：")[0] : "";
+  slide.addText(" ", {
+    x: 0,
+    y: 0,
+    w: 13.333,
+    h: 0.14,
+    margin: 0,
+    fill: { color: template.accentColor },
+    line: { color: template.accentColor }
+  });
+  slide.addText(deckSlide.title, {
+    x: 0.6,
+    y: 0.45,
+    w: 11.4,
+    h: 0.5,
+    fontFace: template.titleFont,
+    fontSize: 22,
+    color: template.titleColor,
+    bold: true
+  });
+  slide.addText(" ", {
+    x: 0.62,
+    y: 1.0,
+    w: 1.2,
+    h: 0.03,
+    margin: 0,
+    fill: { color: template.accentColor },
+    line: { color: template.accentColor }
+  });
+  if (sectionLabel) {
+    slide.addText(sectionLabel, {
+      x: 10.6,
+      y: 0.48,
+      w: 1.9,
+      h: 0.22,
+      fontFace: template.bodyFont,
+      fontSize: 9,
+      color: template.accentColor,
+      align: "right",
+      bold: true
+    });
+  }
+  slide.addText((deckSlide.bullets || []).map((item) => `- ${item}`).join("\n"), {
+    x: 0.9,
+    y: 1.35,
+    w: 10.7,
+    h: 5.0,
+    fontFace: template.bodyFont,
+    fontSize,
+    color: template.bodyColor,
+    margin: 0.08,
+    valign: "top"
+  });
+  addFooter(slide, index, total, template);
+}
+
+function addSectionSlide(slide, deckSlide, template, index, total) {
+  slide.addText(" ", {
+    x: 0,
+    y: 0,
+    w: 13.333,
+    h: 7.5,
+    margin: 0,
+    fill: { color: template.heroBackgroundColor || template.backgroundColor },
+    line: { color: template.heroBackgroundColor || template.backgroundColor }
+  });
+  slide.addText(" ", {
+    x: 0.85,
+    y: 0.8,
+    w: 0.18,
+    h: 4.6,
+    margin: 0,
+    fill: { color: template.accentColor },
+    line: { color: template.accentColor }
+  });
+  slide.addText(deckSlide.title, {
+    x: 1.35,
+    y: 1.05,
+    w: 9.2,
+    h: 1.1,
+    fontFace: template.titleFont,
+    fontSize: 24,
+    color: template.heroTitleColor || "FFFFFF",
+    bold: true
+  });
+  slide.addText((deckSlide.bullets || []).map((item) => `- ${item}`).join("\n"), {
+    x: 1.4,
+    y: 2.35,
+    w: 8.8,
+    h: 3.0,
+    fontFace: template.bodyFont,
+    fontSize: 16,
+    color: template.heroSubtitleColor || "E8EDF2",
+    margin: 0.05,
+    valign: "top"
+  });
+  addFooter(slide, index, total, {
+    ...template,
+    accentColor: template.heroSubtitleColor || template.accentColor
+  });
+}
+
+async function main() {
+  const args = parseArgs(process.argv);
+  if (!args["spec-file"] || !args["template-file"] || !args["output-file"]) {
+    throw new Error("Expected --spec-file, --template-file, and --output-file.");
+  }
+
+  const [specRaw, templateRaw] = await Promise.all([
+    fs.readFile(args["spec-file"], "utf-8"),
+    fs.readFile(args["template-file"], "utf-8")
+  ]);
+  const spec = JSON.parse(specRaw);
+  const template = JSON.parse(templateRaw);
+
+  const pptx = new pptxgen();
+  pptx.layout = "LAYOUT_WIDE";
+  pptx.author = "Codex";
+  pptx.subject = spec.title || "Defense Deck";
+  pptx.company = "paper-to-defense-ppt";
+  pptx.theme = {
+    headFontFace: template.titleFont,
+    bodyFontFace: template.bodyFont,
+    lang: "zh-CN"
+  };
+
+  const totalSlides = (spec.slides || []).length;
+  for (const [index, deckSlide] of (spec.slides || []).entries()) {
+    const slide = pptx.addSlide();
+    const bg = deckSlide.layout === "title" ? (template.heroBackgroundColor || template.backgroundColor) : template.backgroundColor;
+    slide.background = { color: bg };
+    if (deckSlide.layout === "title") {
+      addTitleSlide(slide, deckSlide, template);
+    } else if (deckSlide.layout === "section") {
+      addSectionSlide(slide, deckSlide, template, index + 1, totalSlides);
+    } else {
+      addBulletSlide(slide, deckSlide, template, index + 1, totalSlides);
+    }
+    if (deckSlide.notes) {
+      slide.addNotes(deckSlide.notes);
+    }
+  }
+
+  const outputFile = path.resolve(args["output-file"]);
+  await fs.mkdir(path.dirname(outputFile), { recursive: true });
+  await pptx.writeFile({ fileName: outputFile });
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});

@@ -1,0 +1,13 @@
+{
+  "id": "tongji-blue",
+  "displayName": "Tongji Blue",
+  "backgroundColor": "FFFFFF",
+  "heroBackgroundColor": "2E75B5",
+  "titleColor": "2E75B5",
+  "heroTitleColor": "FFFFFF",
+  "heroSubtitleColor": "DCEAF7",
+  "bodyColor": "1F1F1F",
+  "accentColor": "2E75B5",
+  "titleFont": "Microsoft YaHei",
+  "bodyFont": "Microsoft YaHei"
+}

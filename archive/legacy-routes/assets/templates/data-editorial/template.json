@@ -1,0 +1,13 @@
+{
+  "id": "data-editorial",
+  "displayName": "Data Editorial",
+  "backgroundColor": "FCFBF8",
+  "heroBackgroundColor": "213022",
+  "titleColor": "213022",
+  "heroTitleColor": "FCFBF8",
+  "heroSubtitleColor": "DAE5D7",
+  "bodyColor": "333333",
+  "accentColor": "4E7A57",
+  "titleFont": "Aptos Display",
+  "bodyFont": "Aptos"
+}

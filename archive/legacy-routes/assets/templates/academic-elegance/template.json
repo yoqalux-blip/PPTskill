@@ -1,0 +1,13 @@
+{
+  "id": "academic-elegance",
+  "displayName": "Academic Elegance",
+  "backgroundColor": "F6F2EB",
+  "heroBackgroundColor": "1C2A39",
+  "titleColor": "1C2A39",
+  "heroTitleColor": "F6F2EB",
+  "heroSubtitleColor": "D5DDE5",
+  "bodyColor": "2C343C",
+  "accentColor": "8A5A44",
+  "titleFont": "Aptos Display",
+  "bodyFont": "Aptos"
+}

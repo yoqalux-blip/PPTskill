@@ -1,0 +1,21 @@
+{
+  "name": "paper-to-defense-ppt",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Skill scaffold for thesis-to-defense presentation workflows using structured contracts, image2 raster pages, and PDF-first export.",
+  "scripts": {
+    "extract": "python ./scripts/extract_paper_pack.py",
+    "analyze": "python ./scripts/analyze_extraction.py",
+    "brief:rewrite": "python ./scripts/rewrite_presentation_brief.py",
+    "spec:outline": "python ./scripts/spec_outline.py",
+    "template:profile": "python ./scripts/build_template_profile.py",
+    "page-raster:contracts": "python ./scripts/build_page_raster_contracts_v1.py",
+    "export:pdf": "python ./scripts/export_image_pages_to_pdf.py",
+    "export:ppt": "node ./scripts/export_image_pages_to_ppt.mjs",
+    "ppt:normalize": "powershell -ExecutionPolicy Bypass -File ./scripts/normalize_pptx.ps1"
+  },
+  "dependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "cdutcm-defense",
+  "displayName": "Chengdu TCM Defense",
+  "sourcePptx": "user-provided-defense-template.pptx",
+  "backgroundColor": "FFFFFF",
+  "heroBackgroundColor": "2E75B5",
+  "titleColor": "2E75B5",
+  "heroTitleColor": "FFFFFF",
+  "heroSubtitleColor": "DCEAF7",
+  "bodyColor": "1F1F1F",
+  "accentColor": "2E75B5",
+  "titleFont": "Microsoft YaHei",
+  "bodyFont": "Microsoft YaHei",
+  "brand": null,
+  "brandPolicy": "No school logo or school name is rendered by the generation pipeline; reserve top-right space for manual branding after export."
+}
