@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import re
 import shutil
-import subprocess
 import zipfile
 from pathlib import Path
 from typing import Any
@@ -18,10 +17,6 @@ NS = {
     "p": "http://schemas.openxmlformats.org/presentationml/2006/main",
 }
 EMU_PER_INCH = 914400
-
-
-def run(command: list[str]) -> None:
-    subprocess.run(command, check=True)
 
 
 def parse_slide_size(zf: zipfile.ZipFile) -> dict[str, float]:
@@ -181,24 +176,10 @@ def template_style_brief(profile: dict[str, Any]) -> str:
 
 
 def export_template_slides(template_pptx: Path, output_dir: Path) -> None:
-    existing = sorted(output_dir.glob("slide-*.png"))
-    if len(existing) >= 12:
-        return
-    run(
-        [
-            "powershell",
-            "-ExecutionPolicy",
-            "ByPass",
-            "-File",
-            str((Path(__file__).with_name("export_ppt_slides.ps1")).resolve()),
-            "-PptPath",
-            str(template_pptx.resolve()),
-            "-OutputDir",
-            str(output_dir.resolve()),
-            "-Width",
-            "1600",
-        ]
-    )
+    # Production profile building must not invoke PowerPoint automation.
+    # If reference PNGs already exist, later steps may reuse them; otherwise
+    # the profile is built from PPTX package metadata only.
+    output_dir.mkdir(parents=True, exist_ok=True)
 
 
 def brand_reference_image(src: Path, dst: Path, brand: dict[str, Any], zones: dict[str, Any]) -> None:
@@ -283,7 +264,7 @@ def build_profile(template_pptx: Path, export_dir: Path, brand: dict[str, Any]) 
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Extract an academic template profile and representative reference pages from a PPTX template.")
+    parser = argparse.ArgumentParser(description="Extract an academic template profile from a PPTX template without rendering a PPT/PPTX deck.")
     parser.add_argument("--template-pptx", required=True)
     parser.add_argument("--work-dir", required=True)
     parser.add_argument("--output-profile-file")

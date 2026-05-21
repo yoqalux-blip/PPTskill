@@ -1,11 +1,11 @@
 ---
 name: paper-to-defense-ppt
-description: Build defense-ready academic presentation workflows from thesis or project materials. Use when Codex needs to turn PDF or DOCX papers, graduation thesis drafts, research reports, abstracts, or defense requirements into a reviewable pipeline with extraction, analysis brief, deck outline, deck spec, fixed 35-page contracts, image2 full-page generation, and final PDF or image-based PPTX output for graduation defense or research talk scenarios.
+description: Build defense-ready academic presentation workflows from thesis or project materials. Use when Codex needs to turn PDF or DOCX papers, graduation thesis drafts, research reports, abstracts, or defense requirements into a reviewable pipeline with extraction, analysis brief, deck outline, deck spec, fixed 35-page contracts, image2 full-page generation, and final PDF-only output for graduation defense or research talk scenarios.
 ---
 
 # Overview
 
-Use this skill to convert thesis materials into a structured, reviewable presentation workflow instead of jumping straight to slide generation. Treat Codex as the reasoning lead and the bundled scripts as deterministic helpers for extraction, file shaping, fixed page contracts, image-page export, and local packaging.
+Use this skill to convert thesis materials into a structured, reviewable presentation workflow instead of jumping straight to slide generation. Treat Codex as the reasoning lead and the bundled scripts as deterministic helpers for extraction, file shaping, fixed page contracts, image-page generation, and PDF export.
 
 ## Locked Mainline
 
@@ -16,9 +16,8 @@ Use this skill to convert thesis materials into a structured, reviewable present
 5. Lock the final deck to `35` pages and build a strict `page_manifest.json` and `page_recipe/<slide-id>.json` contract for every generated page.
 6. Generate ordered full-page review images with `image2`.
 7. Export the ordered images into a single `PDF`.
-8. Optionally package the same ordered images into an image-based `PPTX`.
-9. When a local PPTX is produced, normalize it through a silent PowerPoint open-and-save pass so the file opens cleanly.
-10. Use the validated external PDF-to-PPT toolchain when downstream PPT conversion is needed.
+8. Stop the production route at the `PDF`.
+9. Use the validated external PDF-to-PPT toolchain only as a separate downstream step outside this skill when PPT conversion is needed.
 
 ## Supplemental Asset Route
 
@@ -57,7 +56,6 @@ runs/<run-name>/
   page_assets/
   slides/
   final-deck.pdf
-  final-deck.clean.pptx
 ```
 
 ## Script Entry Points
@@ -71,10 +69,8 @@ Use these scripts directly when you want deterministic file generation:
 - `scripts/build_template_profile.py`
 - `scripts/build_page_raster_contracts_v1.py`
 - `scripts/export_image_pages_to_pdf.py`
-- `scripts/export_image_pages_to_ppt.mjs`
 - `scripts/generate_third_party_image.py`
 - `scripts/call_third_party_model.py`
-- `scripts/normalize_pptx.ps1`
 
 ## Reasoning Rules
 
@@ -90,7 +86,9 @@ Use these scripts directly when you want deterministic file generation:
 - The current production route is `image2-page-raster`.
 - Every generated page must first have a strict contract before any model call happens.
 - The canonical review artifact is a folder of ordered slide images plus a merged `PDF`.
-- Image-based `PPTX` packaging is a local convenience output, not the core conversion strategy.
+- `PDF` is the only production export. Do not create PPT/PPTX from inside this skill.
+- Do not use Python PPT libraries, Node PPT libraries, PowerPoint COM automation, Google Slides, draw.io, or archived renderers as production backends.
+- Do not execute files under `archive/legacy-routes/` unless the user explicitly asks for a legacy experiment.
 - For `route-board` pages, treat the user's thesis-roadmap sample images as a style family, not as a literal multi-panel layout to copy.
 - For `route-board` pages, prefer the shared thesis-roadmap grammar: strong top headline, central hub, surrounding workstreams, side support rails, and a bottom synthesis zone.
 - Generated pages are Chinese-first by default; do not route through an English intermediate draft unless the user explicitly asks for English output.

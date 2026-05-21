@@ -11,10 +11,8 @@ The current production route is:
 3. `deck-outline.md` and `deck-spec.json`
 4. A fixed `35-page` contract set is built for the final deck
 5. `image2` generates the ordered full-page review images
-6. Ordered slide images export to:
-   - `PDF` as the canonical delivery artifact
-   - optional image-based `PPTX`
-7. External tools convert the `PDF` into downstream PPT when needed
+6. Ordered slide images export to `PDF` as the canonical delivery artifact
+7. The production route stops at `PDF`; external tools convert the `PDF` into downstream PPT only outside the skill when needed
 
 ## What Is Fixed
 
@@ -35,9 +33,10 @@ The current production route is:
 - The composition policy is fixed as: `lock content and forbidden zones, but do not lock one rigid layout`.
 - The system should be stable in hierarchy and boundaries, but still leave enough design freedom to avoid mechanical slides.
 - Coordinate leakage, schema leakage, JSON fragments, and internal layout metadata on rendered pages are hard failures.
-- `PDF` is now the canonical export for the image-page route.
-- Image-based `PPTX` is generated locally as a convenience deliverable, not as the core conversion strategy.
+- `PDF` is the only production export for the image-page route.
+- Image-based `PPTX` generation is not part of the production route.
 - `Gemini API` is reserved for explicit supplemental visual-asset requests only.
+- Native PPT/PPTX generation through Python, Node, PowerPoint COM, Google Slides, draw.io, or archived renderers is forbidden in the production route.
 
 ## What Is No Longer Mainline
 
@@ -46,6 +45,7 @@ The current production route is:
 - BioRender is not assumed to be automatable in this session.
 - Gemini full-page generation is excluded from the primary production chain.
 - Image-to-editable-PPT reconstruction is not the primary route.
+- Image-based PPTX packaging is archived and excluded from the primary production chain.
 - draw.io, Gemini hybrid, native-PPT diagram routes, and visual-QA repair routes are archived capabilities.
 
 ## Core Deliverables
@@ -62,7 +62,6 @@ For a full production run, expect:
 - `page_assets/<slide-id>/attempt-*/`
 - ordered `slides/`
 - `*.pdf`
-- optional `*.clean.pptx`
 
 ## Core Scripts
 
@@ -73,10 +72,8 @@ For a full production run, expect:
 - `scripts/build_template_profile.py`
 - `scripts/build_page_raster_contracts_v1.py`
 - `scripts/export_image_pages_to_pdf.py`
-- `scripts/export_image_pages_to_ppt.mjs`
 - `scripts/generate_third_party_image.py`
 - `scripts/call_third_party_model.py`
-- `scripts/normalize_pptx.ps1`
 
 ## Review Surface
 
@@ -85,4 +82,4 @@ The review surface is the pair:
 - structured content contracts
 - ordered generated slide images
 
-That pair keeps the process stable even when the final PDF-to-PPT step is performed by an external tool.
+That pair keeps the process stable. Any final PDF-to-PPT step must be performed by an external tool outside the skill.

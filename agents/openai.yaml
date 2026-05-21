@@ -1,7 +1,7 @@
 interface:
   display_name: "Paper to Defense PPT"
   short_description: "Turn thesis materials into a fixed 35-page defense deck workflow with Chinese-first image2 page generation and PDF-first export."
-  default_prompt: "Use $paper-to-defense-ppt to turn my thesis PDF or DOCX into a 35-page defense presentation workflow: extract the paper, build analysis and outline artifacts, create page contracts, generate Chinese-first image2 full-page slides, export ordered images to PDF, and optionally package an image-based PPTX."
+  default_prompt: "Use $paper-to-defense-ppt to turn my thesis PDF or DOCX into a 35-page defense presentation workflow: extract the paper, build analysis and outline artifacts, create page contracts, generate Chinese-first image2 full-page slides, and export ordered images to PDF only. Do not generate PPTX inside the skill."
 
 policy:
   allow_implicit_invocation: true

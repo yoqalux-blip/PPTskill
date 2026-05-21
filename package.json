@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Skill scaffold for thesis-to-defense presentation workflows using structured contracts, image2 raster pages, and PDF-first export.",
+  "description": "Skill scaffold for thesis-to-defense presentation workflows using structured contracts, image2 raster pages, and PDF-only production export.",
   "scripts": {
     "extract": "python ./scripts/extract_paper_pack.py",
     "analyze": "python ./scripts/analyze_extraction.py",
@@ -12,10 +12,6 @@
     "template:profile": "python ./scripts/build_template_profile.py",
     "page-raster:contracts": "python ./scripts/build_page_raster_contracts_v1.py",
     "export:pdf": "python ./scripts/export_image_pages_to_pdf.py",
-    "export:ppt": "node ./scripts/export_image_pages_to_ppt.mjs",
-    "ppt:normalize": "powershell -ExecutionPolicy Bypass -File ./scripts/normalize_pptx.ps1"
-  },
-  "dependencies": {
-    "pptxgenjs": "^4.0.1"
+    "audit:route-lock": "python ./scripts/audit_route_lock.py"
   }
 }

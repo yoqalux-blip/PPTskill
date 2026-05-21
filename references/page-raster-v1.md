@@ -3,7 +3,7 @@
 - This route is the current production route.
 - The final deck is locked to `35` pages.
 - The current locked template profile is `cdutcm-defense`; the concrete PPTX template is user-provided at run time and is not committed into the skill repository.
-- The current production export is `PDF` first, with optional image-based `PPTX` packaging.
+- The current production export is `PDF` only.
 
 ## Core Principle
 
@@ -29,15 +29,14 @@
 - `page_assets/<slide-id>/attempt-*/`
 - ordered `slides/`
 - final `PDF`
-- optional local `PPTX`
 
 ## Current Scripts
 
 - `scripts/build_template_profile.py`
 - `scripts/build_page_raster_contracts_v1.py`
 - `scripts/export_image_pages_to_pdf.py`
-- `scripts/export_image_pages_to_ppt.mjs`
-- `scripts/normalize_pptx.ps1`
+
+Do not generate PPT/PPTX in this route. Legacy PPT packaging scripts are archived and must not be used unless the user explicitly asks for a legacy experiment.
 
 ## Supplemental Asset Route
 

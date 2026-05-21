@@ -53,5 +53,5 @@ Treat the gateway as untrusted until a real request succeeds. Keep request and r
 ## Guardrails
 
 - Do not send thesis data to the image model unless the prompt is already reduced to the figure brief needed for that single asset.
-- Prefer transparent background outputs for PPT overlays.
+- Prefer transparent background outputs for slide-page image overlays.
 - Keep prompts and captions Chinese-first unless the user explicitly asks for English.

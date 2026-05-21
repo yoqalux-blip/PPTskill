@@ -11,8 +11,8 @@
 1. Thesis content is converted into strict page contracts.
 2. Full-page review images are generated with `image2`.
 3. Ordered slide images are exported into a merged `PDF`.
-4. The same ordered images can also be packaged into an image-based `PPTX`.
-5. External tools handle the downstream `PDF -> PPT` conversion when needed.
+4. Production stops at the merged `PDF`.
+5. External tools handle any downstream `PDF -> PPT` conversion as a separate non-skill step when needed.
 
 ## Gemini Supplemental Asset Route
 
@@ -33,6 +33,8 @@ In that workflow:
 ## Guardrails
 
 - Do not use Gemini as the default full-page renderer.
+- Do not generate native PPT/PPTX inside this skill.
+- Do not use Python PPT libraries, Node PPT libraries, PowerPoint COM automation, Google Slides rendering, draw.io rendering, or archived render scripts as a production backend.
 - Do not use image models to fabricate quantitative charts.
 - Do not ask image models to print coordinates, schema labels, JSON fragments, or internal metadata.
 - Do not embed school names, school logos, or template branding into generated page images.

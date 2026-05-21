@@ -156,7 +156,7 @@ def build_gemini_payload(prompt: str, model: str, args: argparse.Namespace) -> d
 
     text = prompt
     if args.transparent_background:
-        text += "\n要求：透明背景，适合叠加到答辩PPT页面中。"
+        text += "\n要求：透明背景，适合叠加到答辩页面图像中。"
 
     return {
         "model": model,
@@ -175,7 +175,7 @@ def build_gemini_payload(prompt: str, model: str, args: argparse.Namespace) -> d
 def build_openai_payload(prompt: str, model: str, args: argparse.Namespace) -> dict[str, Any]:
     text = prompt
     if args.transparent_background:
-        text += "\n要求：transparent background, suitable for PPT overlay."
+        text += "\nRequirement: transparent background, suitable for slide-page image overlay."
 
     payload: dict[str, Any] = {
         "model": model,
