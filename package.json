@@ -11,6 +11,7 @@
     "spec:outline": "python ./scripts/spec_outline.py",
     "template:profile": "python ./scripts/build_template_profile.py",
     "page-raster:contracts": "python ./scripts/build_page_raster_contracts_v1.py",
+    "abtest:legibility": "python ./scripts/build_chinese_legibility_abtest.py",
     "export:pdf": "python ./scripts/export_image_pages_to_pdf.py",
     "audit:route-lock": "python ./scripts/audit_route_lock.py"
   }

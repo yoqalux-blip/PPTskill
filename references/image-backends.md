@@ -40,6 +40,7 @@ In that workflow:
 - Do not embed school names, school logos, or template branding into generated page images.
 - Prefer transparent-background outputs when a supplemental visual should float inside a page layout.
 - Prefer a clean academic visual style over fantasy or commercial poster aesthetics.
+- For dense Chinese pages, do not ask the image backend to solve clarity by printing tiny body copy. Prefer structural density and, when needed, a local deterministic Chinese text layer before PDF export.
 
 ## Review Questions
 

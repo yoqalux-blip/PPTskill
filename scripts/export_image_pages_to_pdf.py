@@ -30,9 +30,17 @@ def export_image_pages_to_pdf(image_dir: Path, output_pdf: Path) -> Path:
         page.insert_image(page.rect, filename=str(image_path))
         img_doc.close()
 
-    doc.save(output_pdf)
+    save_path = output_pdf
+    if output_pdf.exists():
+        try:
+            output_pdf.unlink()
+        except PermissionError:
+            save_path = output_pdf.with_name(f"{output_pdf.stem}.new{output_pdf.suffix}")
+            if save_path.exists():
+                save_path.unlink()
+    doc.save(save_path, deflate=True, garbage=4)
     doc.close()
-    return output_pdf
+    return save_path
 
 
 def main() -> None:

@@ -501,6 +501,27 @@ def complexity_target(role: str) -> dict[str, Any]:
     return mapping[role]
 
 
+def legibility_policy(role: str) -> dict[str, Any]:
+    """Keep density high without asking the image model to draw unreadable microtext."""
+    complex_roles = {"route-board", "study-design-board", "evidence-chain-board", "mechanism-board"}
+    return {
+        "primary_goal": "high-density Chinese pages with crisp, reviewable text",
+        "density_strategy": [
+            "preserve density with structural groups, hierarchy bands, chips, connectors, and visual layers",
+            "split long Chinese statements into short readable labels and stacked cards",
+            "use diagrams and module geometry to carry complexity instead of shrinking prose",
+        ],
+        "text_rendering_preference": "deterministic-local-text-layer-when-small-text-is-needed",
+        "do_not_solve_by": [
+            "simply increasing all font sizes",
+            "packing dense Chinese microtext into one small image-model text area",
+            "letting labels blur into decorative texture",
+        ],
+        "minimum_visual_density": "very-high" if role in complex_roles else "medium-high",
+        "small_text_rule": "small labels are allowed only when they remain crisp after PDF export; otherwise split or promote them into chips",
+    }
+
+
 def content_blocks(index: int, role: str, slide: dict[str, Any]) -> list[dict[str, Any]]:
     bullets = slide.get("bullets", [])
     takeaway = slide.get("takeaway", "")
@@ -688,6 +709,8 @@ def review_checks(role: str) -> list[str]:
         "Do not let arrows or labels float without clear alignment.",
         "Keep layout ordered and committee-friendly rather than poster-like chaos.",
         "Chinese content should stay intentionally dense and complete, not hollow or overly abbreviated.",
+        "Do not preserve density by making Chinese text tiny; preserve density with more structure, modules, chips, connectors, and visual layers.",
+        "Small Chinese labels must remain crisp after PDF export; long text should be split into multiple readable cards.",
         "Do not show school names, school logos, watermark-like marks, or header branding of any kind.",
         "Do not leak internal schema labels, slot names, or development metadata.",
     ]
@@ -715,7 +738,8 @@ def build_recipe(index: int, slide: dict[str, Any], profile: dict[str, Any], fig
         "slide_number": index,
         "page_role": role,
         "render_language": "zh-CN",
-        "density_policy": "zh-primary-dense",
+        "density_policy": "zh-primary-dense-readable",
+        "legibility_policy": legibility_policy(role),
         "composition_policy": {
             "principle": "lock-content-not-composition",
             "summary": "Lock content hierarchy, safe zones, and forbidden patterns, but allow controlled compositional freedom.",
@@ -772,6 +796,7 @@ def build_recipe(index: int, slide: dict[str, Any], profile: dict[str, Any], fig
             "Do not show any school name, school logo, or placeholder university branding.",
             "Do not print coordinates, thresholds, x/y/w/h values, or JSON-like metadata.",
             "Do not print slot names, schema labels, component ids, or internal route-map tokens.",
+            "Do not render dense Chinese microtext or blurred tiny body copy.",
         ],
         "figure_source_refs": figure_source_refs(role, slide, figure_ref_dir),
         "review_checks": review_checks(role),

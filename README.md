@@ -18,6 +18,7 @@ The current locked route is intentionally simple and stable:
 - School names and school logos are not baked into generated pages.
 - The top-right header region stays visually quiet for manual branding after export.
 - Technical route boards use the supplied thesis-roadmap style family: dense blue-white academic hierarchy, central hub, workstream clusters, support rails, and bottom synthesis zones.
+- Chinese legibility should be preserved with structural density, visual density, and deterministic text layers, not by making all text larger or by accepting blurry microtext.
 - Coordinates, schema words, JSON fragments, internal prompt metadata, and `x/y/w/h` strings inside rendered pages are treated as failures.
 - Figma and Canva are excluded from the production route.
 - Gemini is only a supplemental asset backend when the user explicitly asks for a missing visual asset.
@@ -40,10 +41,13 @@ The current locked route is intentionally simple and stable:
 npm install
 npm run template:profile -- --template-pptx <template.pptx> --work-dir <run-dir>
 npm run page-raster:contracts -- --spec-file <deck-spec.json> --template-profile-file <template_profile.json> --recipes-dir <page_recipe> --output-manifest-file <page_manifest.json> --output-spec-file <deck-spec.raster.json>
+npm run abtest:legibility
 npm run export:pdf -- --slides-dir <slides> --output-pdf <final-deck.pdf>
 npm run audit:route-lock
 ```
 
 Run `npm run audit:route-lock` after pulling this skill on another computer. It fails if the production route drifts back toward PPTX rendering, PowerPoint automation, draw.io rendering, or other archived branches.
+
+`npm run abtest:legibility` creates `runs/chinese-text-legibility-abtest/` with 9 PNG comparison pages, `contact-sheet.png`, and `readability-test.pdf`. It is an image/PDF-only experiment for comparing prompt-only text, sharpened raster text, and deterministic local Chinese text layers.
 
 Generated runs, paper packs, node modules, local API config files, and binary decks are intentionally ignored by Git.
