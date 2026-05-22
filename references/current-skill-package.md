@@ -31,7 +31,7 @@ The current production route is:
 - Generated review pages are now Chinese-first; the old English intermediate route is no longer the default.
 - Chinese page content should stay intentionally dense so the final deck still feels full and committee-ready.
 - Chinese clarity should not be protected by making all text larger or by accepting fuzzy microtext. Density should shift toward structure, diagram layers, chips, and connectors.
-- The current legibility experiment compares prompt-only raster text, sharpened raster text, and a deterministic local Chinese text layer before PDF export.
+- Prompt-only Chinese text sharpening and Photoshop text-layer post-processing have been tested and are no longer part of the active optimization effort.
 - The composition policy is fixed as: `lock content and forbidden zones, but do not lock one rigid layout`.
 - The system should be stable in hierarchy and boundaries, but still leave enough design freedom to avoid mechanical slides.
 - Coordinate leakage, schema leakage, JSON fragments, and internal layout metadata on rendered pages are hard failures.
