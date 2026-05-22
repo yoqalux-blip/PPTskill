@@ -95,6 +95,7 @@ Use these scripts directly when you want deterministic file generation:
 - Keep Chinese page content intentionally dense and complete so the final review deck still feels full and committee-ready.
 - Preserve density through structure, modules, chips, connectors, and visual layers; do not rely on tiny blurred Chinese text to make a page feel full.
 - When small Chinese labels are necessary, prefer a deterministic local Chinese text layer over asking the image model to paint microtext directly into the raster image.
+- Do not keep optimizing around prompt-only Chinese text sharpening or Photoshop text-layer post-processing; those routes have been tested and are no longer part of the active effort.
 - For `route-board`, `study-design-board`, `evidence-chain-board`, and `mechanism-board`, define a per-page complexity target and treat sparse layouts as failures.
 - Keep generated raster pages free of all school branding and leave the top-right header corner visually quiet so branding can be added manually later.
 - Fix the content contract and density, but allow controlled compositional freedom so the image model can produce more advanced board layouts.
