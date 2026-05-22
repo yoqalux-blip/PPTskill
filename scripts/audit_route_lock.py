@@ -30,6 +30,7 @@ REQUIRED_TEXT = {
         "final PDF-only output",
         "`PDF` is the only production export",
         "Do not create PPT/PPTX from inside this skill",
+        "Do not keep optimizing around prompt-only Chinese text sharpening or Photoshop text-layer post-processing",
     ],
     "agents/openai.yaml": [
         "export ordered images to PDF only",
@@ -38,6 +39,7 @@ REQUIRED_TEXT = {
     "references/current-skill-package.md": [
         "`PDF` is the only production export",
         "Native PPT/PPTX generation",
+        "Prompt-only Chinese text sharpening and Photoshop text-layer post-processing have been tested",
     ],
 }
 
